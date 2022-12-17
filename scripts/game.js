@@ -25,6 +25,7 @@ let running = false;
 let delta = 0;
 let prev = new Date().getTime()
 let time = 0;
+let isStart = false;
 let isOver = false;
 let isPause = false;
 let triggerDestroy = false;
@@ -71,9 +72,13 @@ const update = () => {
     birds.forEach(bird => {
       if (bird.y + bird.r > HEIGHT - 50) {
         bird.alive = false
+        triggerDestroy = true;
+        setTimeout(init, 1000)
       }
       if (bird.isCollapse(pipe)) {
         bird.alive = false
+        triggerDestroy = true;
+        setTimeout(init, 1000)
       }
     })
   })
@@ -137,12 +142,12 @@ const loop = () => {
   const now = new Date().getTime()
   delta = (now - prev) / 1000 
   prev = now
-  time += delta
 
   running = !isOver && !isPause
 
   if (running) {
-    update()
+    time += delta
+    isStart && update()
     render()
   }
 
@@ -154,6 +159,9 @@ const bindKey = (event) => {
   switch (code) {
     case 'Space':
       if (!running) return
+      if (!isStart) {
+        isStart = true;
+      }
       birds.forEach(bird => { bird.jump() })
       break;
     case 'KeyP': 
@@ -169,6 +177,7 @@ const bindKey = (event) => {
 }
 
 const init = () => {
+  isStart = false;
   isOver = false;
   isPause = false;
   running = true;

@@ -3,7 +3,7 @@ class Bird {
     this.alive = true;
     this.r = 25;
     this.x = 200;
-    this.y = 200;
+    this.y = 300;
     
     this.vy = 0;
   }
